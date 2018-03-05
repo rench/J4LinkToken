@@ -1,0 +1,11 @@
+
+dependencies {
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.46'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+    compile group: 'org.web3j', name: 'core', version: '3.3.1'
+    compile group: 'cn.hutool', name: 'hutool-all', version: '4.0.6'
+}
+
+

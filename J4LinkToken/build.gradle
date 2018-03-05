@@ -1,0 +1,80 @@
+buildscript {
+  ext {
+    dependencyManagementPluginVersion = '1.0.0.RELEASE'
+    springBootVersion = '1.5.9.RELEASE'
+  }
+  repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public'}
+    jcenter()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+  }
+  dependencies {
+    classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}"
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    classpath "net.researchgate:gradle-release:2.4.0"
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
+  }
+}
+allprojects {
+  apply plugin: 'eclipse'
+  apply plugin: 'idea'
+  apply plugin: 'java'
+  apply plugin: 'io.spring.dependency-management'
+  apply plugin: 'org.springframework.boot'
+  repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public'}
+    jcenter()
+  }
+  dependencyManagement {
+    imports {
+       mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Dalston.SR5'
+       mavenBom 'io.spring.platform:platform-bom:Brussels-SR6'
+    }
+  }
+  compileJava.options.encoding = 'UTF-8'
+  bootRun {
+    systemProperties System.properties
+  }
+  test {
+    systemProperties System.properties
+  }
+}
+
+repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public'}
+    jcenter()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-aop")
+    //compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    //compile("org.springframework.boot:spring-boot-starter-data-redis")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.8.8")
+    compile("com.alibaba:fastjson:1.2.41")
+    compile("com.squareup.okhttp3:okhttp:3.9.1")
+    compile("org.web3j:core:3.2.0")
+    compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.9.RELEASE'
+    compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.9.RELEASE'
+    compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.2.2'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '3.9.1'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+    testCompile 'junit:junit:4.12'
+}
+idea {
+  module {
+    inheritOutputDirs = false
+    outputDir = file("$buildDir/classes/main/")
+  }
+}
+
+
