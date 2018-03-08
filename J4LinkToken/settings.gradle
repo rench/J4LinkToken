@@ -19,3 +19,4 @@ rootProject.name = 'J4LinkToken'
 
 include 'server'
 include 'client'
+include 'api'

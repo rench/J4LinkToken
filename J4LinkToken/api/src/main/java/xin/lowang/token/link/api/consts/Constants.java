@@ -1,4 +1,4 @@
-package xin.lowang.token.link.consts;
+package xin.lowang.token.link.api.consts;
 /**
  * 常量
  *
