@@ -139,4 +139,7 @@ public class RpcApi {
         return web3j;
     }
 
+    public static void main(String[] args) {
+        LOGGER.debug("测试");
+    }
 }

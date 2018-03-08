@@ -1,10 +1,14 @@
 package xin.lowang.token.link.api;
 
 import cn.hutool.crypto.digest.DigestUtil;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xin.lowang.token.link.api.consts.Constants;
+import xin.lowang.token.link.api.vo.WkyUser;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -22,6 +26,7 @@ public class HttpApi {
 
     /**
      * 密码混淆
+     *
      * @param pwd 原始密码
      * @return 混淆后的密码
      */
@@ -39,6 +44,7 @@ public class HttpApi {
 
     /**
      * 参数签名
+     *
      * @param params
      * @param sessionid
      * @param isGet
@@ -64,6 +70,7 @@ public class HttpApi {
 
     /**
      * 构建form表单参数
+     *
      * @param params
      * @return
      */
@@ -76,6 +83,27 @@ public class HttpApi {
                     sb.append("&").append(k).append("=").append(v);
                 });
         return sb.substring(1);
+    }
+
+    /**
+     * 用户登录
+     *
+     * @param user 用户信息
+     */
+    public static void login(WkyUser user) {
+        String targetUrl = Constants.ACCOUNT_URL + "user/login?appversion=1.4.11"; //登录地址
+        Map<String, String> formMap = new HashMap<>();
+        String deviceid = RandomStringUtils.randomAlphanumeric(48);
+        formMap.put("account_type", "4");
+        formMap.put("deviceid", deviceid);
+        formMap.put("imeiid", deviceid);
+        formMap.put("ph_model", "iPhone 6");
+        formMap.put("ph_ver", "iOS 10.3.3");
+        formMap.put("phone", user.getUsername());
+        formMap.put("pwd", user.getEncodedPassword());
+        formMap.put("uuid", user.getUuid());
+        formMap.put("sign", singData(formMap, user.getCookie("sessionid"), false));
+        
     }
 
 }

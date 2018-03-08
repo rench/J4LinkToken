@@ -154,6 +154,16 @@ public class WkyUser {
         this.addr = addr;
     }
 
+    /**
+     * 获取用户的cookie键值
+     *
+     * @param name
+     * @return
+     */
+    public String getCookie(String name) {
+        return null;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
