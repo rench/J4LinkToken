@@ -103,7 +103,7 @@ public class HttpApi {
         formMap.put("pwd", user.getEncodedPassword());
         formMap.put("uuid", user.getUuid());
         formMap.put("sign", singData(formMap, user.getCookie("sessionid"), false));
-        
+
     }
 
 }

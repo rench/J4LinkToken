@@ -1,61 +1,50 @@
 buildscript {
-  ext {
-    dependencyManagementPluginVersion = '1.0.0.RELEASE'
-    springBootVersion = '1.5.9.RELEASE'
-  }
-  repositories {
-    maven { url 'http://maven.aliyun.com/nexus/content/groups/public'}
-    jcenter()
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
-  }
-  dependencies {
-    classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}"
-    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-    classpath "net.researchgate:gradle-release:2.4.0"
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
-  }
+    ext {
+        dependencyManagementPluginVersion = '1.0.4.RELEASE'
+        springBootVersion = '2.0.0.RELEASE'
+    }
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        jcenter()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
 }
 allprojects {
-  apply plugin: 'eclipse'
-  apply plugin: 'idea'
-  apply plugin: 'java'
-  apply plugin: 'io.spring.dependency-management'
-  apply plugin: 'org.springframework.boot'
-  repositories {
-    maven { url 'http://maven.aliyun.com/nexus/content/groups/public'}
-    jcenter()
-  }
-  dependencyManagement {
-    imports {
-       mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Dalston.SR5'
-       mavenBom 'io.spring.platform:platform-bom:Brussels-SR6'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    repositories {
+
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
     }
-  }
-  compileJava.options.encoding = 'UTF-8'
-  bootRun {
-    systemProperties System.properties
-  }
-  test {
-    systemProperties System.properties
-  }
+    dependencyManagement {
+        imports {
+            //mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Finchley.M7'
+            //mavenBom 'io.spring.platform:platform-bom:Brussels-SR7'
+        }
+    }
+    compileJava.options.encoding = 'UTF-8'
+    bootRun {
+        systemProperties System.properties
+    }
+    test {
+        systemProperties System.properties
+    }
+    dependencies {
+        compile("org.projectlombok:lombok")
+    }
 }
-
-repositories {
-    maven { url 'http://maven.aliyun.com/nexus/content/groups/public'}
-    jcenter()
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
-}
-
-dependencies {
-
-}
-idea {
-  module {
-    inheritOutputDirs = false
-    outputDir = file("$buildDir/classes/main/")
-  }
-}
-
 
