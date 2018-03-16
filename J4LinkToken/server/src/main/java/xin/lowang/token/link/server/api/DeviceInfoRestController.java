@@ -11,6 +11,7 @@ import xin.lowang.token.link.server.service.DeviceInfoService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
 @RequestMapping("/device")
@@ -58,6 +59,7 @@ public class DeviceInfoRestController {
 
     @PostMapping("/sns")
     public Flux<DeviceInfoVo> getBySn(@RequestBody final Mono<List<String>> sns) {
+        ThreadLocalRandom.current().nextBoolean();
         return deviceInfoService.getBySn(sns.flatMapMany(Flux::fromIterable));
     }
 }
