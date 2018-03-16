@@ -2,13 +2,13 @@ package xin.lowang.token.link.api;
 
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONArray;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.web3j.crypto.Credentials;
-import org.web3j.crypto.RawTransaction;
-import org.web3j.crypto.TransactionEncoder;
-import org.web3j.crypto.WalletUtils;
+import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
@@ -36,6 +36,13 @@ public class RpcApi {
      * 日志
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcApi.class);
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    static {
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     /**
      * 获取余额(单位:链克)
@@ -137,6 +144,24 @@ public class RpcApi {
         service.addHeader("Nc", "IN");
         Web3j web3j = Web3j.build(service);
         return web3j;
+    }
+
+    /**
+     * 更新钱包密码
+     *
+     * @param password
+     * @param newPassword
+     * @param keyStorePath
+     */
+    public static void updateAccount(String password, String newPassword, String keyStorePath) {
+        try {
+            ECKeyPair ecKeyPair = Wallet.decrypt(password, objectMapper.readValue(keyStorePath, WalletFile.class)); //解密出公钥和私钥
+            WalletFile newFile = Wallet.createStandard(newPassword, ecKeyPair); //重新生成keystore文件
+            objectMapper.writeValue(new File(keyStorePath), newFile);
+        } catch (Exception e) {
+            throw new RuntimeException("更新钱包失败,请确认keyStore文件存在并且密码正确");
+        }
+
     }
 
     public static void main(String[] args) {
