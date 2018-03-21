@@ -1,26 +1,21 @@
 package xin.lowang.token.link.server;
 
-import org.junit.Test;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
-import xin.lowang.token.link.server.api.vo.DeviceInfoVo;
+import org.springframework.web.reactive.socket.WebSocketMessage;
+import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
+import org.springframework.web.reactive.socket.client.WebSocketClient;
+import reactor.core.publisher.Flux;
+
+import java.net.URI;
+import java.time.Duration;
 
 public class WebSocketClientTest {
-    private WebTestClient client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();
-
-    @Test
-    public void testCreateUser() throws Exception{
-        final DeviceInfoVo vo = new DeviceInfoVo();
-        vo.setName("xxxx");
-        vo.setIp("127.0.0.1");
-        vo.setSn("SN00001");
-        client.post().uri("/device")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
-                .body(Mono.just(vo),DeviceInfoVo.class)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody().jsonPath("$[0].name").isEqualTo("xxxx");
+    public static void main(final String[] args) {
+        final WebSocketClient client = new ReactorNettyWebSocketClient();
+        client.execute(URI.create("ws://localhost:8080/echo"), session ->
+                session.send(Flux.just(session.textMessage("Hello")))
+                        .thenMany(session.receive().take(1).map(WebSocketMessage::getPayloadAsText))
+                        .doOnNext(System.out::println)
+                        .then())
+                .block(Duration.ofMillis(5000));
     }
 }
