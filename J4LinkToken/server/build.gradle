@@ -2,6 +2,7 @@
 dependencies {
     //compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-webflux")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 //解决bootRun windows下cmd过长的问题
 task pathingJar(type: Jar) {
