@@ -3,7 +3,7 @@ package xin.lowang.token.link.kotlin.web
 import java.util.*
 
 
-data class UserInfo(val id: Long, val name: String, var age: Int)
+data class UserInfo(var id: Long, var name: String, var age: Int)
 
 fun main(args: Array<String>) {
     //test1()
